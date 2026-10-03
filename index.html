@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<link rel="apple-touch-icon" href="icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Gizli Bahçe">
-<link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gizli Bahçe">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gizli Bahçe - Kitap Okuma Yolculuğu</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-serif-title { font-family: 'Playfair Display', serif; }
+        .font-serif-title { font-family: 'Playfair Display', serif !important; }
     </style>
 </head>
 <body class="bg-[#F4F6F0] text-[#2D3A3A] min-h-screen pb-12">
@@ -45,7 +46,7 @@
         <!-- 1. KİTAP BAHÇESİ (LİSTE) -->
         <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="font-serif-title text-xl font-bold text-[#3B5336]">📚 Okuma Fidanlığım</h2>
+                <h2 class="font-serif-title text-xl font-bold text-[#3B5336]">📚 Okuma Fidanlığım (Depo)</h2>
                 <button onclick="openAddBookModal()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
                     + Yeni Fidan (Kitap) Ekle
                 </button>
@@ -69,7 +70,7 @@
             </div>
         </section>
 
-        <!-- BAHÇE YÖNETİMİ BÖLÜMÜ (Kitaplığın Altına Taşındı ve "Kararlar" Yazısı Çıkarıldı) -->
+        <!-- BAHÇE YÖNETİMİ BÖLÜMÜ -->
         <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm">
             <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">🌱 Bahçe Yönetimi</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,16 +99,39 @@
         <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm">
             <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">💧 Günlük Bahçe Bakımı</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
                 <!-- Fidan Ekimi Görevi -->
-                <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center">
+                <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex flex-col justify-between gap-3">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Fidan Ekimi</h3>
-                        <p class="text-xs text-[#6B7C65]">+200 Öz (Yeni kitaba başla)</p>
+                        <p class="text-xs text-[#6B7C65]">+200 Öz (Raftan kitaba başla)</p>
                     </div>
-                    <button onclick="openPlantStartModal()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
-                        Başla!
-                    </button>
+                    <div class="flex gap-2">
+                        <select id="selectBookToPlant" class="w-full bg-white border border-[#D0DBB9] rounded-lg px-3 py-1.5 text-xs text-[#2D3A3A] focus:outline-none">
+                            <option value="">Raftan kitap seç...</option>
+                        </select>
+                        <button onclick="confirmPlantStart()" class="px-3 py-1.5 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46] whitespace-nowrap">
+                            Fidan Dik
+                        </button>
+                    </div>
                 </div>
+
+                <!-- Mükemmel bir çiçek! (Kitap bitti) -->
+                <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex flex-col justify-between gap-3">
+                    <div>
+                        <h3 class="font-semibold text-[#2D3A3A]">Mükemmel bir çiçek! (Kitap bitti)</h3>
+                        <p class="text-xs text-[#6B7C65]">+100 Öz (Biten kitabı seç ve çiçek açtır)</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="finishedBookSelect" class="w-full bg-white border border-[#D0DBB9] rounded-lg px-3 py-1.5 text-xs text-[#2D3A3A] focus:outline-none">
+                            <option value="">Bitirilen kitabı seç...</option>
+                        </select>
+                        <button onclick="finishBookTask()" class="px-3 py-1.5 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46] whitespace-nowrap">
+                            Çiçek Açtır
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Fidanı Sula -->
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center">
                     <div>
@@ -118,16 +142,18 @@
                         Başla!
                     </button>
                 </div>
+
                 <!-- Hafta Sonu Yürüyüşü -->
-                <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center md:col-span-2">
+                <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Hafta Sonu Orman Yürüyüşü (60 Dakika)</h3>
-                        <p class="text-xs text-[#6B7C65]">+100 Öz (Fidanı 2 katı büyütür)</p>
+                        <p class="text-xs text-[#6B7C65]">+100 Öz (Fidanı hızla büyütür)</p>
                     </div>
                     <button onclick="weekendWalk()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
                         Başla!
                     </button>
                 </div>
+
             </div>
         </section>
 
@@ -172,33 +198,10 @@
 
     </main>
 
-    <!-- FİDANI EKLE / BAŞLA MODAL -->
-    <div id="plantStartModal" class="fixed inset-0 bg-[#2D3A3A]/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-[#FAFDF6] border border-[#D0DBB9] w-full max-w-md p-6 rounded-2xl shadow-xl">
-            <h3 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">🌱 Yeni Fidan Dik (Kitap Başla)</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-[#6B7C65] mb-1">Hangi Kitabı Okumaya Başlıyorsun?</label>
-                    <select id="selectBookToPlant" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]">
-                        <!-- Dinamik dolacak -->
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-[#6B7C65] mb-1">Kitabın Toplam Sayfa Sayısı (Büyüme takibi için)</label>
-                    <input type="number" id="inputBookPages" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]" placeholder="Örn: 300">
-                </div>
-                <div class="flex justify-end gap-3 mt-6">
-                    <button onclick="closePlantStartModal()" class="px-4 py-2 rounded-xl text-sm bg-[#E2E8D7] hover:bg-[#D0DBB9] text-[#4A5D43] transition">İptal</button>
-                    <button onclick="confirmPlantStart()" class="px-4 py-2 rounded-xl text-sm bg-[#6B8E5F] hover:bg-[#557A46] text-white font-semibold transition">Fidanı Dik (+200 Öz)</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- KİTAP EKLEME MODAL -->
     <div id="addBookModal" class="fixed inset-0 bg-[#2D3A3A]/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-[#FAFDF6] border border-[#D0DBB9] w-full max-w-md p-6 rounded-2xl shadow-xl">
-            <h3 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">Yeni Fidan Ekle</h3>
+            <h3 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">Depoya Yeni Fidan Ekle</h3>
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs text-[#6B7C65] mb-1">Kitap Adı</label>
@@ -222,16 +225,15 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV3')) || {
+        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV7')) || {
             xp: 0,
             books: [
-                { id: 1, name: "Örnek: İnce Bir Hikaye", tier: "Papatya (İnce Kitap) - 100 Öz", xpValue: 100, completed: false, planted: true, totalPages: 150, readPages: 30 },
-                { id: 2, name: "Örnek: Doğa Romanı", tier: "Meşe Fidanı (Normal Roman) - 200 Öz", xpValue: 200, completed: false, planted: false, totalPages: 300, readPages: 0 }
+                { id: 1, name: "Örnek: İnce Bir Hikaye", tier: "Papatya (İnce Kitap) - 100 Öz", xpValue: 100, completed: false, planted: false, totalPages: 150, readPages: 0 }
             ]
         };
 
         function saveState() {
-            localStorage.setItem('gardenReadingStateV3', JSON.stringify(gameState));
+            localStorage.setItem('gardenReadingStateV7', JSON.stringify(gameState));
             render();
         }
 
@@ -249,6 +251,7 @@
             updateBadgeStatus('badge-5000', gameState.xp >= 5000);
 
             renderBookTable();
+            renderSelects();
             renderVisualForest();
         }
 
@@ -257,32 +260,59 @@
             tbody.innerHTML = '';
             
             if (gameState.books.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-[#7A8C73]">Bahçende henüz fidan yok. Yukarıdan ekleyebilirsin!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-[#7A8C73]">Deponda henüz fidan yok. Yukarıdan ekleyebilirsin!</td></tr>`;
                 return;
             }
 
             gameState.books.forEach(book => {
+                let statusBadge = '';
+                let statusClass = '';
+                
+                if (book.completed) {
+                    statusBadge = 'Yeşerdi ✓';
+                    statusClass = 'bg-[#D0DBB9] text-[#3B5336]';
+                } else if (book.planted) {
+                    statusBadge = `Büyüyor (${book.readPages}/${book.totalPages || 200} sf)`;
+                    statusClass = 'bg-[#E2E8D7] text-[#557A46] font-semibold';
+                } else {
+                    statusBadge = 'Rafta';
+                    statusClass = 'bg-[#EBEFF2] text-[#6A7B8C]';
+                }
+
                 const tr = document.createElement('tr');
                 tr.className = book.completed ? 'opacity-50 bg-[#F4F6F0]/40' : '';
                 tr.innerHTML = `
                     <td class="py-3 px-4 font-medium ${book.completed ? 'line-through text-[#7A8C73]' : 'text-[#2D3A3A]'}">
-                        ${book.name} ${book.planted ? '<span class="text-xs bg-[#D0DBB9] text-[#3B5336] px-1.5 py-0.5 rounded ml-1">Bahçede 🌱</span>' : ''}
+                        ${book.name}
                     </td>
                     <td class="py-3 px-4 text-[#6B7C65] text-xs">${book.tier}</td>
                     <td class="py-3 px-4 text-[#557A46] font-semibold">+${book.xpValue} Öz</td>
                     <td class="py-3 px-4 text-center">
-                        <span class="px-2 py-1 rounded text-xs font-semibold ${book.completed ? 'bg-[#D0DBB9] text-[#3B5336]' : 'bg-[#E2E8D7] text-[#557A46]'}">
-                            ${book.completed ? 'Yeşerdi ✓' : (book.readPages ? `Okunan: ${book.readPages} sf` : 'Büyüyor')}
+                        <span class="px-2.5 py-1 rounded text-xs ${statusClass}">
+                            ${statusBadge}
                         </span>
                     </td>
                     <td class="py-3 px-4 text-right space-x-2">
-                        <button onclick="toggleBook(${book.id})" class="px-3 py-1 rounded text-xs font-bold transition ${book.completed ? 'bg-[#E2E8D7] text-[#4A5D43] hover:bg-[#D0DBB9]' : 'bg-[#6B8E5F] text-white hover:bg-[#557A46]'}">
-                            ${book.completed ? 'Geri Al' : 'Bitirdim!'}
-                        </button>
                         <button onclick="deleteBook(${book.id})" class="text-[#A36C6C] hover:text-[#8C5555] text-xs px-1">Kaldır</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
+            });
+        }
+
+        function renderSelects() {
+            const plantSelect = document.getElementById('selectBookToPlant');
+            plantSelect.innerHTML = '<option value="">Raftan kitap seç...</option>';
+            const raftBooks = gameState.books.filter(b => !b.planted && !b.completed);
+            raftBooks.forEach(b => {
+                plantSelect.innerHTML += `<option value="${b.id}">${b.name}</option>`;
+            });
+
+            const finishedSelect = document.getElementById('finishedBookSelect');
+            finishedSelect.innerHTML = '<option value="">Bitirilen kitabı seç...</option>';
+            const activeBooks = gameState.books.filter(b => b.planted && !b.completed);
+            activeBooks.forEach(b => {
+                finishedSelect.innerHTML += `<option value="${b.id}">${b.name}</option>`;
             });
         }
 
@@ -293,7 +323,7 @@
             const plantedBooks = gameState.books.filter(b => b.planted && !b.completed);
 
             if (plantedBooks.length === 0) {
-                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan yok. "Fidan Ekimi" görevinden kitap seçerek fidan dikebilirsin!</p>`;
+                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan yok. "Fidan Ekimi" bölümünden kitap seçerek fidan dikebilirsin!</p>`;
                 return;
             }
 
@@ -316,7 +346,7 @@
                     <div class="text-4xl mb-2 animate-bounce">${plantEmoji}</div>
                     <span class="font-bold text-xs text-[#3B5336] truncate w-full" title="${book.name}">${book.name}</span>
                     <span class="text-[10px] text-[#6B7C65] mt-1">${plantStageName}</span>
-                    <span class="text-[10px] text-[#557A46] font-semibold mt-0.5">${book.readPages} / ${book.totalPages || '?'} Sayfa</span>
+                    <span class="text-[10px] text-[#557A46] font-semibold mt-0.5">${book.readPages} / ${book.totalPages || 200} Sayfa</span>
                 `;
                 container.appendChild(div);
             });
@@ -333,43 +363,33 @@
             }
         }
 
-        // Fidan Dikme (Başla!) Modal İşlemleri
-        function openPlantStartModal() {
-            const select = document.getElementById('selectBookToPlant');
-            select.innerHTML = '';
-            
-            const availableBooks = gameState.books.filter(b => !b.planted && !b.completed);
-            if (availableBooks.length === 0) {
-                select.innerHTML = `<option value="">Önce yukarıdan yeni bir fidan (kitap) eklemelisin!</option>`;
-            } else {
-                availableBooks.forEach(b => {
-                    select.innerHTML += `<option value="${b.id}">${b.name}</option>`;
-                });
-            }
-            document.getElementById('plantStartModal').classList.remove('hidden');
-        }
-
-        function closePlantStartModal() {
-            document.getElementById('plantStartModal').classList.add('hidden');
-        }
-
         function confirmPlantStart() {
             const bookId = document.getElementById('selectBookToPlant').value;
-            const totalPagesInput = document.getElementById('inputBookPages').value;
-            if (!bookId) return alert("Lütfen dikilecek bir kitap seç!");
+            if (!bookId) return alert("Lütfen dikmek için raftan bir kitap seç!");
 
             const book = gameState.books.find(b => b.id == bookId);
             if (book) {
                 book.planted = true;
-                book.totalPages = parseInt(totalPagesInput) || 200;
+                book.totalPages = 200;
                 book.readPages = 0;
                 gameState.xp += 200;
-                closePlantStartModal();
                 saveState();
             }
         }
 
-        // Fidanı Sula (30 Dakika = 30 sayfa)
+        function finishBookTask() {
+            const bookId = document.getElementById('finishedBookSelect').value;
+            if (!bookId) return alert("Lütfen bitirdiğin kitabı seç!");
+
+            const book = gameState.books.find(b => b.id == bookId);
+            if (book) {
+                book.completed = true;
+                book.readPages = book.totalPages;
+                gameState.xp += 100;
+                saveState();
+            }
+        }
+
         function waterPlant() {
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
             if (!activeBook) return alert("Bahçede sulanacak aktif bir fidanın yok! Önce 'Fidan Ekimi' ile bir kitap dik.");
@@ -381,7 +401,6 @@
             saveState();
         }
 
-        // Hafta Sonu Orman Yürüyüşü (60 Dakika = 60 sayfa)
         function weekendWalk() {
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
             if (!activeBook) return alert("Bahçede yürüyüş yapıp fidanını büyütecek aktif bir kitabın yok!");
@@ -393,7 +412,6 @@
             saveState();
         }
 
-        // Bahçe Yönetimi: Fidandan Vazgeçtin (-50 Öz)
         function abandonPlant() {
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
             if (!activeBook) return alert("Bahçeden vazgeçecek aktif bir fidanın bulunmuyor.");
@@ -406,24 +424,12 @@
             }
         }
 
-        // Bahçe Yönetimi: Yeni Fidan Fikri (-50 Öz)
         function newPlantIdea() {
             if (confirm("Yeni bir kitap fikri/satın alımı için 50 Öz harcamak istiyor musun? (-50 Öz)")) {
                 gameState.xp -= 50;
                 if (gameState.xp < 0) gameState.xp = 0;
                 saveState();
                 openAddBookModal();
-            }
-        }
-
-        function toggleBook(id) {
-            const book = gameState.books.find(b => b.id === id);
-            if (book) {
-                book.completed = !book.completed;
-                if (book.completed) book.readPages = book.totalPages;
-                gameState.xp += book.completed ? book.xpValue : -book.xpValue;
-                if (gameState.xp < 0) gameState.xp = 0;
-                saveState();
             }
         }
 
