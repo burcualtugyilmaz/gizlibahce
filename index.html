@@ -104,7 +104,7 @@
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex flex-col justify-between gap-3">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Fidan Ekimi</h3>
-                        <p class="text-xs text-[#6B7C65]">Raftan aktif dikime başla</p>
+                        <p class="text-xs text-[#6B7C65]">Raftan aktif dikime başla <span class="text-[#557A46] font-bold">(+100 Öz)</span></p>
                     </div>
                     <div class="flex gap-2">
                         <select id="selectBookToPlant" class="w-full bg-white border border-[#D0DBB9] rounded-lg px-3 py-1.5 text-xs text-[#2D3A3A] focus:outline-none">
@@ -245,7 +245,6 @@
             xp: 0,
             claimedRewards: [],
             books: [
-                // İnce Kitaplar (100 Öz) + İngilizce Olanlar (+50 Bonus)
                 { id: 1, name: "Sheets", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 2, name: "Life Among the Savages", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 3, name: "Yaşlı Bebekler", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
@@ -253,8 +252,6 @@
                 { id: 5, name: "Öfke Dansı", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 6, name: "Bu Benim Kanım", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 7, name: "Cancer Journals", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
-
-                // Orta Kalınlıkta Kitaplar (200 Öz) + İngilizce Olanlar (+50 Bonus)
                 { id: 8, name: "Aşk-ı Memnu", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
                 { id: 9, name: "Son İnsan", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
                 { id: 10, name: "Vahşi Evler", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
@@ -265,8 +262,6 @@
                 { id: 15, name: "Evet Beyinli Çocuk", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
                 { id: 16, name: "Dağınık Zihinler", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
                 { id: 17, name: "İngiltere’nin Kısa Tarihi", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
-
-                // Kalın / Ağır Kitaplar (500 Öz) + İngilizce Olanlar (+50 Bonus)
                 { id: 18, name: "Ruhlar Evi", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
                 { id: 19, name: "Feminist Teori", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
                 { id: 20, name: "Feminist Düşünce", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
@@ -355,13 +350,13 @@
             plantSelect.innerHTML = '<option value="">Raftan kitap seç...</option>';
             const raftBooks = gameState.books.filter(b => !b.planted && !b.completed);
             raftBooks.forEach(b => {
-                plantSelect.innerHTML += `<option value="${b.id}">${b.name}</option>`;
+                plantSelect.innerHTML += `<option value="${b.id}">${b.name} (+${b.xpValue} Öz)</option>`;
             });
 
             const finishedSelect = document.getElementById('finishedBookSelect');
             finishedSelect.innerHTML = '<option value="">Bitirilen kitabı seç...</option>';
-            const activeBooks = gameState.books.filter(b => b.planted && !b.completed);
-            activeBooks.forEach(b => {
+            const allUncompletedBooks = gameState.books.filter(b => !b.completed);
+            allUncompletedBooks.forEach(b => {
                 finishedSelect.innerHTML += `<option value="${b.id}">${b.name} (+${b.xpValue} Öz)</option>`;
             });
         }
@@ -373,7 +368,6 @@
             const plantedBooks = gameState.books.filter(b => b.planted && !b.completed);
             let hasItems = false;
 
-            // 1. Ekili fidanları ekle
             plantedBooks.forEach(book => {
                 hasItems = true;
                 let progress = book.totalPages ? (book.readPages / book.totalPages) * 100 : 10;
@@ -399,7 +393,6 @@
                 container.appendChild(div);
             });
 
-            // 2. Kazanılıp bahçeye eklenen ödülleri ekle
             if (gameState.claimedRewards && gameState.claimedRewards.length > 0) {
                 gameState.claimedRewards.forEach(reward => {
                     hasItems = true;
@@ -456,6 +449,7 @@
             const book = gameState.books.find(b => b.id == bookId);
             if (book) {
                 book.planted = true;
+                gameState.xp += 100; // Fidan ekimi başlangıç puanı
                 saveState();
             }
         }
