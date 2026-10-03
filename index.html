@@ -330,7 +330,21 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV20')) || {
+        // Verilerin gelecekteki güncellemelerde silinmemesi için anahtar sabitlendi
+        const STORAGE_KEY = 'gizliBahceKaliciState';
+
+        // Eski versiyonlardaki verileri otomatik taşıma kontrolü
+        let savedData = localStorage.getItem(STORAGE_KEY);
+        if (!savedData) {
+            // Eğer yeni anahtarda veri yoksa eski versiyonu kontrol et ve aktar
+            const oldData = localStorage.getItem('gardenReadingStateV20');
+            if (oldData) {
+                localStorage.setItem(STORAGE_KEY, oldData);
+                savedData = oldData;
+            }
+        }
+
+        let gameState = savedData ? JSON.parse(savedData) : {
             xp: 0,
             claimedRewards: [],
             witheredPlants: [],
@@ -364,7 +378,7 @@
         };
 
         function saveState() {
-            localStorage.setItem('gardenReadingStateV20', JSON.stringify(gameState));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
             render();
         }
 
@@ -433,7 +447,6 @@
             const readPages = activeBook.readPages || 0;
             const remainingPages = Math.max(0, totalPages - readPages);
 
-            // Okuma hızı: 30 dakikada 20 sayfa
             const minutesNeeded = Math.ceil(remainingPages * (30 / 20));
             infoEl.innerText = `Kitabı bitirmek için gereken süre: ${minutesNeeded} dakika (${Math.round(remainingPages)} sayfa kaldı)`;
         }
