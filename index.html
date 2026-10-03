@@ -52,6 +52,30 @@
             <div id="randomBookResult" class="mt-3 text-base font-semibold text-[#557A46] min-h-[28px] transition-all"></div>
         </div>
 
+        <!-- İSTATİSTİKLER SAYACI BÖLÜMÜ -->
+        <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm text-center space-y-4">
+            <div>
+                <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-3">📊 İstatistikler</h2>
+                <p class="italic text-sm text-[#557A46] leading-relaxed">
+                    Bu projeye başladığından beri...<br>
+                    <span id="statTotalPages" class="font-bold text-base text-[#3B5336]">0</span> sayfa<br>
+                    <span id="statTotalMinutes" class="font-bold text-base text-[#3B5336]">0</span> dakika<br>
+                    kitap okudun.
+                </p>
+            </div>
+            <div class="pt-3 border-t border-[#E2E8D7] flex justify-around text-sm">
+                <div>
+                    <span class="block text-xs text-[#7A8C73]">Bitirilen kitaplar:</span>
+                    <span id="statFinishedBooks" class="font-bold text-[#3B5336] text-base">0</span>
+                </div>
+                <div class="h-8 w-px bg-[#E2E8D7]"></div>
+                <div>
+                    <span class="block text-xs text-[#7A8C73]">Kalan kitaplar:</span>
+                    <span id="statRemainingBooks" class="font-bold text-[#3B5336] text-base">0</span>
+                </div>
+            </div>
+        </section>
+
         <!-- 1. KİTAP BAHÇESİ (LİSTE) -->
         <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm">
             <div class="flex justify-between items-center mb-6">
@@ -250,7 +274,7 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV13')) || {
+        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV14')) || {
             xp: 0,
             claimedRewards: [],
             books: [
@@ -281,7 +305,7 @@
         };
 
         function saveState() {
-            localStorage.setItem('gardenReadingStateV13', JSON.stringify(gameState));
+            localStorage.setItem('gardenReadingStateV14', JSON.stringify(gameState));
             render();
         }
 
@@ -302,6 +326,29 @@
             renderBookTable();
             renderSelects();
             renderVisualForest();
+            renderStatistics();
+        }
+
+        function renderStatistics() {
+            let totalPages = 0;
+            let finishedCount = 0;
+            let remainingCount = 0;
+
+            gameState.books.forEach(book => {
+                totalPages += (book.readPages || 0);
+                if (book.completed) {
+                    finishedCount++;
+                } else {
+                    remainingCount++;
+                }
+            });
+
+            let totalMinutes = totalPages; // 1 sayfa = 1 dakika varsayımı
+
+            document.getElementById('statTotalPages').innerText = totalPages;
+            document.getElementById('statTotalMinutes').innerText = totalMinutes;
+            document.getElementById('statFinishedBooks').innerText = finishedCount;
+            document.getElementById('statRemainingBooks').innerText = remainingCount;
         }
 
         function renderBookTable() {
@@ -437,7 +484,7 @@
 
             let counter = 0;
             let speed = 50;
-            let totalSteps = 25; // Hızlı geçiş adımı sayısı
+            let totalSteps = 25;
 
             function roll() {
                 let randomIndex = Math.floor(Math.random() * availableBooks.length);
@@ -445,7 +492,7 @@
                 counter++;
 
                 if (counter < totalSteps) {
-                    speed += 10; // Yavaşlama efekti
+                    speed += 10;
                     setTimeout(roll, speed);
                 } else {
                     let finalBook = availableBooks[Math.floor(Math.random() * availableBooks.length)];
@@ -495,7 +542,7 @@
             const book = gameState.books.find(b => b.id == bookId);
             if (book) {
                 book.planted = true;
-                gameState.xp += 100; // Fidan ekimi başlangıç puanı
+                gameState.xp += 100;
                 saveState();
             }
         }
