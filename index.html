@@ -43,13 +43,52 @@
 
     <main class="max-w-4xl mx-auto px-4 mt-8 space-y-8">
 
-        <!-- RASTGELE KİTAP SEÇME BÖLÜMÜ -->
-        <div class="flex flex-col items-center justify-center bg-[#FAFDF6] p-4 rounded-2xl border border-[#D0DBB9] shadow-sm text-center">
-            <h3 class="font-serif-title text-lg font-bold text-[#3B5336] mb-2">Hangi kitabı okusam diye kararsız mı kaldın?</h3>
-            <button onclick="pickRandomBook()" id="pickButton" class="px-6 py-2.5 rounded-xl font-bold text-sm transition bg-[#557A46] text-white hover:bg-[#3B5336] shadow-sm">
-                🎲 Benim İçin Seç
+        <!-- AKTİF ODAKLANMA / SAYAÇ ALANI -->
+        <div id="timerCard" class="hidden bg-[#E2E8D7] border-2 border-[#6B8E5F] p-6 rounded-2xl shadow-md text-center">
+            <h3 id="timerTitle" class="font-serif-title text-lg font-bold text-[#3B5336] mb-1">🌿 Odaklanma Vakti</h3>
+            <p id="timerDesc" class="text-xs text-[#557A46] mb-2">İlk 1 dakika içinde cezasız vazgeçebilirsin. Sonrasında vazgeçersen fidanın solar!</p>
+            <div id="countdownDisplay" class="font-serif-title text-4xl font-bold text-[#3B5336] tracking-wider mb-4">30:00</div>
+            <button onclick="cancelTimer()" class="px-4 py-1.5 rounded-xl text-xs bg-[#EED6D6] text-[#8C4A4A] hover:bg-[#E2C0C0] font-semibold transition">
+                Odaklanmayı İptal Et
             </button>
-            <div id="randomBookResult" class="mt-3 text-base font-semibold text-[#557A46] min-h-[28px] transition-all"></div>
+        </div>
+
+        <!-- RASTGELE KİTAP SEÇME & SERBEST KRONOMETRE BÖLÜMÜ (DÜZENLENDİ) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Rastgele Kitap (Ortalandı) -->
+            <div class="bg-[#FAFDF6] p-5 rounded-2xl border border-[#D0DBB9] shadow-sm flex flex-col justify-between text-center">
+                <div>
+                    <h3 class="font-serif-title text-base font-bold text-[#3B5336] mb-1">Hangi kitabı okusam diye kararsız mı kaldın?</h3>
+                    <p class="text-[11px] text-[#7A8C73] mb-4">Raftaki okunmamış kitaplarından rastgele birini seç.</p>
+                </div>
+                <div class="flex flex-col items-center justify-center gap-3 pt-2">
+                    <button onclick="pickRandomBook()" id="pickButton" class="px-5 py-2.5 rounded-xl font-bold text-xs transition bg-[#557A46] text-white hover:bg-[#3B5336] shadow-sm">
+                        🎲 Benim İçin Seç
+                    </button>
+                    <div id="randomBookResult" class="text-sm font-semibold text-[#557A46] min-h-[24px]"></div>
+                </div>
+            </div>
+
+            <!-- Serbest Okuma Kronometresi (Sayaç ve Butonlar Ortalandı) -->
+            <div class="bg-[#FAFDF6] p-5 rounded-2xl border border-[#D0DBB9] shadow-sm flex flex-col justify-between text-center">
+                <div>
+                    <h3 class="font-serif-title text-base font-bold text-[#3B5336] mb-1">📖 Serbest Okuma Kronometresi</h3>
+                    <p class="text-[11px] text-[#7A8C73] mb-3">Zamanı başlat, okuman bittiğinde durdur.</p>
+                </div>
+                <div class="flex flex-col items-center justify-center gap-3 pt-2">
+                    <div id="stopwatchDisplay" class="font-serif-title text-3xl font-bold text-[#3B5336] tracking-wider">00:00:00</div>
+                    <div class="flex gap-2">
+                        <button onclick="toggleStopwatch()" id="stopwatchToggleBtn" class="px-4 py-2 rounded-xl font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
+                            ▶ Başla
+                        </button>
+                        <button onclick="resetStopwatch()" class="px-3 py-2 rounded-xl font-bold text-xs transition bg-[#EED6D6] text-[#8C4A4A] hover:bg-[#E2C0C0]">
+                            Sıfırla
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- İSTATİSTİKLER SAYACI BÖLÜMÜ -->
@@ -169,9 +208,9 @@
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Fidanı Sula (30 Dakika)</h3>
-                        <p class="text-xs text-[#6B7C65]">+50 Öz (Fidanı büyütür)</p>
+                        <p class="text-xs text-[#6B7C65]">+50 Öz (Canlı Sayaç veya Serbest Okuma ile)</p>
                     </div>
-                    <button onclick="waterPlant()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
+                    <button onclick="startWaterPlantTimer()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
                         Başla!
                     </button>
                 </div>
@@ -180,9 +219,9 @@
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex justify-between items-center">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Hafta Sonu Orman Yürüyüşü (60 Dakika)</h3>
-                        <p class="text-xs text-[#6B7C65]">+100 Öz (Fidanı hızla büyütür)</p>
+                        <p class="text-xs text-[#6B7C65]">+100 Öz (Canlı Sayaç veya Serbest Okuma ile)</p>
                     </div>
-                    <button onclick="weekendWalk()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
+                    <button onclick="startWeekendWalkTimer()" class="px-4 py-2 rounded-lg font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]">
                         Başla!
                     </button>
                 </div>
@@ -234,7 +273,7 @@
         <section class="bg-[#E2E8D7] rounded-2xl p-6 border border-[#D0DBB9] shadow-inner text-center">
             <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-6">Canlı Orman ve Ödüller</h2>
             <div id="visualForest" class="flex flex-wrap justify-center items-end gap-6 min-h-[160px] p-6 bg-[#FAFDF6] rounded-xl border border-[#D0DBB9]">
-                <!-- Dinamik fidanlar ve ödüller buraya gelecek -->
+                <!-- Dinamik fidanlar, ödüller ve solmuş çiçekler buraya gelecek -->
             </div>
         </section>
 
@@ -274,9 +313,12 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV14')) || {
+        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV17')) || {
             xp: 0,
             claimedRewards: [],
+            witheredPlants: [],
+            activeTimer: null, 
+            stopwatch: { running: false, startTime: null, elapsedBefore: 0 },
             books: [
                 { id: 1, name: "Sheets", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 2, name: "Life Among the Savages", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
@@ -305,7 +347,7 @@
         };
 
         function saveState() {
-            localStorage.setItem('gardenReadingStateV14', JSON.stringify(gameState));
+            localStorage.setItem('gardenReadingStateV17', JSON.stringify(gameState));
             render();
         }
 
@@ -327,6 +369,8 @@
             renderSelects();
             renderVisualForest();
             renderStatistics();
+            checkTimerDisplayState();
+            updateStopwatchUI();
         }
 
         function renderStatistics() {
@@ -343,7 +387,7 @@
                 }
             });
 
-            let totalMinutes = totalPages; // 1 sayfa = 1 dakika varsayımı
+            let totalMinutes = totalPages;
 
             document.getElementById('statTotalPages').innerText = totalPages;
             document.getElementById('statTotalMinutes').innerText = totalMinutes;
@@ -463,10 +507,220 @@
                 });
             }
 
+            if (gameState.witheredPlants && gameState.witheredPlants.length > 0) {
+                gameState.witheredPlants.forEach(withered => {
+                    hasItems = true;
+                    const div = document.createElement('div');
+                    div.className = "flex flex-col items-center bg-[#F4E8E8] p-4 rounded-xl border border-[#D9B8B8] shadow-sm w-36";
+                    div.innerHTML = `
+                        <div class="text-4xl mb-2 grayscale opacity-70">🥀</div>
+                        <span class="font-bold text-xs text-[#8C4A4A] truncate w-full">${withered.name}</span>
+                        <span class="text-[10px] text-[#A36C6C] font-semibold mt-1">Solmuş Fidan 🥀</span>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
             if (!hasItems) {
-                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan veya ödül yok. Fidan dikebilir ya da açılan ödüllerini bahçene ekleyebilirsin!</p>`;
+                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan, ödül veya solmuş çiçek yok. Odaklanma seanslarıyla ormanını canlandır!</p>`;
             }
         }
+
+        // --- SERBEST OKUMA KRONOMETRESİ ---
+        function toggleStopwatch() {
+            if (!gameState.stopwatch.running) {
+                gameState.stopwatch.running = true;
+                gameState.stopwatch.startTime = Date.now();
+            } else {
+                const now = Date.now();
+                const currentSessionMs = now - gameState.stopwatch.startTime;
+                gameState.stopwatch.elapsedBefore += currentSessionMs;
+                gameState.stopwatch.running = false;
+                gameState.stopwatch.startTime = null;
+
+                const totalMinutes = Math.floor(gameState.stopwatch.elapsedBefore / (60 * 1000));
+                const previousRecordedMinutes = gameState.stopwatch.recordedMinutes || 0;
+                const newlyReadMinutes = totalMinutes - previousRecordedMinutes;
+
+                if (newlyReadMinutes > 0) {
+                    gameState.stopwatch.recordedMinutes = totalMinutes;
+                    
+                    const activeBook = gameState.books.find(b => b.planted && !b.completed);
+                    if (activeBook) {
+                        activeBook.readPages += newlyReadMinutes;
+                        if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
+                    }
+
+                    alert(`Serbest okuma seansın durduruldu. Toplam ${totalMinutes} dakikalık okuman istatistiklerine ve aktif fidanına işlendi!`);
+                }
+            }
+            saveState();
+        }
+
+        function resetStopwatch() {
+            if (confirm("Serbest okuma kronometresini sıfırlamak istediğine emin misin?")) {
+                gameState.stopwatch = { running: false, startTime: null, elapsedBefore: 0, recordedMinutes: 0 };
+                saveState();
+            }
+        }
+
+        function getStopwatchTotalMs() {
+            let total = gameState.stopwatch.elapsedBefore || 0;
+            if (gameState.stopwatch.running && gameState.stopwatch.startTime) {
+                total += (Date.now() - gameState.stopwatch.startTime);
+            }
+            return total;
+        }
+
+        function updateStopwatchUI() {
+            const display = document.getElementById('stopwatchDisplay');
+            const toggleBtn = document.getElementById('stopwatchToggleBtn');
+            if (!display || !toggleBtn) return;
+
+            const totalMs = getStopwatchTotalMs();
+            const totalSec = Math.floor(totalMs / 1000);
+            const hrs = Math.floor(totalSec / 3600);
+            const mins = Math.floor((totalSec % 3600) / 60);
+            const secs = totalSec % 60;
+
+            display.innerText = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+            if (gameState.stopwatch.running) {
+                toggleBtn.innerText = "⏸ Durdur";
+                toggleBtn.className = "px-4 py-2 rounded-xl font-bold text-xs transition bg-[#EED6D6] text-[#8C4A4A] hover:bg-[#E2C0C0]";
+            } else {
+                toggleBtn.innerText = "▶ Başla";
+                toggleBtn.className = "px-4 py-2 rounded-xl font-bold text-xs transition bg-[#6B8E5F] text-white hover:bg-[#557A46]";
+            }
+
+            const totalMinutes = Math.floor(totalMs / (60 * 1000));
+            if (totalMinutes >= 30 && !gameState.stopwatch.task30Done) {
+                gameState.stopwatch.task30Done = true;
+                gameState.xp += 50;
+                alert("Tebrikler! Serbest okumada 30 dakikayı aştın ve 'Fidanı Sula (30 Dakika)' görevi tamamlandı (+50 Öz)!");
+                saveState();
+            }
+            if (totalMinutes >= 60 && !gameState.stopwatch.task60Done) {
+                gameState.stopwatch.task60Done = true;
+                gameState.xp += 100;
+                alert("Tebrikler! Serbest okumada 60 dakikayı aştın ve 'Hafta Sonu Orman Yürüyüşü (60 Dakika)' görevi tamamlandı (+100 Öz)!");
+                saveState();
+            }
+        }
+
+        // --- SAYAÇ VE 1 DAKİKA CEZA MANTIĞI ---
+        function startWaterPlantTimer() {
+            const activeBook = gameState.books.find(b => b.planted && !b.completed);
+            if (!activeBook) return alert("Bahçede sulanacak aktif bir fidanın yok! Önce 'Fidan Ekimi' ile bir kitap dik.");
+            if (gameState.activeTimer) return alert("Zaten devam eden aktif bir odaklanma sayacın var!");
+
+            const durationMs = 30 * 60 * 1000; 
+            const now = Date.now();
+            gameState.activeTimer = {
+                type: 'water',
+                name: 'Fidanı Sula (30dk)',
+                startTime: now,
+                targetEndTime: now + durationMs
+            };
+            saveState();
+        }
+
+        function startWeekendWalkTimer() {
+            const activeBook = gameState.books.find(b => b.planted && !b.completed);
+            if (!activeBook) return alert("Bahçede yürüyüş yapıp fidanını büyütecek aktif bir kitabın yok!");
+            if (gameState.activeTimer) return alert("Zaten devam eden aktif bir odaklanma sayacın var!");
+
+            const durationMs = 60 * 60 * 1000; 
+            const now = Date.now();
+            gameState.activeTimer = {
+                type: 'walk',
+                name: 'Orman Yürüyüşü (60dk)',
+                startTime: now,
+                targetEndTime: now + durationMs
+            };
+            saveState();
+        }
+
+        function cancelTimer() {
+            if (!gameState.activeTimer) return;
+
+            const now = Date.now();
+            const elapsedMs = now - gameState.activeTimer.startTime;
+            const oneMinuteMs = 60 * 1000; 
+
+            if (elapsedMs <= oneMinuteMs) {
+                if (confirm("İlk 1 dakika içindesin. Seansı cezasız iptal etmek istiyor musun?")) {
+                    gameState.activeTimer = null;
+                    saveState();
+                }
+            } else {
+                if (confirm("1 dakikalık grace süresi doldu! Seansı yarıda kesersen fidanın SOLACAK. Emin misin?")) {
+                    if (!gameState.witheredPlants) gameState.witheredPlants = [];
+                    gameState.witheredPlants.push({ name: gameState.activeTimer.name });
+                    gameState.activeTimer = null;
+                    saveState();
+                    alert("Maalesef fidanın soldu ve bahçende soluk bir çiçek olarak yerini aldı.");
+                }
+            }
+        }
+
+        function checkTimerDisplayState() {
+            const card = document.getElementById('timerCard');
+            const display = document.getElementById('countdownDisplay');
+            const title = document.getElementById('timerTitle');
+
+            if (!gameState.activeTimer) {
+                card.classList.add('hidden');
+                return;
+            }
+
+            card.classList.remove('hidden');
+            if (gameState.activeTimer.type === 'water') {
+                title.innerText = "🌿 Fidanı Sula Odaklanması (30 Dakika)";
+            } else {
+                title.innerText = "🌲 Orman Yürüyüşü Odaklanması (60 Dakika)";
+            }
+
+            const now = Date.now();
+            const remainingMs = gameState.activeTimer.targetEndTime - now;
+
+            if (remainingMs <= 0) {
+                completeTimerTask();
+            } else {
+                const totalSec = Math.floor(remainingMs / 1000);
+                const min = Math.floor(totalSec / 60);
+                const sec = totalSec % 60;
+                display.innerText = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+            }
+        }
+
+        function completeTimerTask() {
+            const timerType = gameState.activeTimer.type;
+            gameState.activeTimer = null;
+
+            const activeBook = gameState.books.find(b => b.planted && !b.completed);
+            if (activeBook) {
+                if (timerType === 'water') {
+                    activeBook.readPages += 30;
+                    if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
+                    gameState.xp += 50;
+                    alert("Tebrikler! 30 dakikalık sulama tamamlandı, fidanın büyüdü (+30 Sayfa, +50 Öz)!");
+                } else if (timerType === 'walk') {
+                    activeBook.readPages += 60;
+                    if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
+                    gameState.xp += 100;
+                    alert("Tebrikler! 60 dakikalık orman yürüyüşü tamamlandı, fidanın serpildi (+60 Sayfa, +100 Öz)!");
+                }
+            }
+            saveState();
+        }
+
+        setInterval(() => {
+            if (gameState.activeTimer) {
+                checkTimerDisplayState();
+            }
+            updateStopwatchUI();
+        }, 1000);
 
         // RASTGELE KİTAP SEÇME ANİMASYONU
         function pickRandomBook() {
@@ -475,7 +729,7 @@
             const pickButton = document.getElementById('pickButton');
 
             if (availableBooks.length === 0) {
-                resultDiv.innerText = "Rafta seçilebilecek uygun kitap kalmadı! Önce yeni fidan ekle veya aktif fidanını bitir.";
+                resultDiv.innerText = "Rafta kitap kalmadı!";
                 return;
             }
 
@@ -488,7 +742,7 @@
 
             function roll() {
                 let randomIndex = Math.floor(Math.random() * availableBooks.length);
-                resultDiv.innerText = `🎲 Seçiliyor... ${availableBooks[randomIndex].name}`;
+                resultDiv.innerText = `🎲 ${availableBooks[randomIndex].name}`;
                 counter++;
 
                 if (counter < totalSteps) {
@@ -496,7 +750,7 @@
                     setTimeout(roll, speed);
                 } else {
                     let finalBook = availableBooks[Math.floor(Math.random() * availableBooks.length)];
-                    resultDiv.innerHTML = `✨ Şanslı Fidanın: <span class="font-bold text-[#3B5336] underline">${finalBook.name}</span> (${finalBook.tier}) ✨`;
+                    resultDiv.innerHTML = `✨ <span class="font-bold text-[#3B5336] underline">${finalBook.name}</span> ✨`;
                     pickButton.disabled = false;
                     pickButton.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
@@ -560,28 +814,6 @@
             }
         }
 
-        function waterPlant() {
-            const activeBook = gameState.books.find(b => b.planted && !b.completed);
-            if (!activeBook) return alert("Bahçede sulanacak aktif bir fidanın yok! Önce 'Fidan Ekimi' ile bir kitap dik.");
-
-            activeBook.readPages += 30;
-            if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
-            
-            gameState.xp += 50;
-            saveState();
-        }
-
-        function weekendWalk() {
-            const activeBook = gameState.books.find(b => b.planted && !b.completed);
-            if (!activeBook) return alert("Bahçede yürüyüş yapıp fidanını büyütecek aktif bir kitabın yok!");
-
-            activeBook.readPages += 60;
-            if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
-            
-            gameState.xp += 100;
-            saveState();
-        }
-
         function abandonPlant() {
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
             if (!activeBook) return alert("Bahçeden vazgeçecek aktif bir fidanın bulunmuyor.");
@@ -590,6 +822,7 @@
                 activeBook.planted = false;
                 gameState.xp -= 50;
                 if (gameState.xp < 0) gameState.xp = 0;
+                if (gameState.activeTimer) gameState.activeTimer = null;
                 saveState();
             }
         }
