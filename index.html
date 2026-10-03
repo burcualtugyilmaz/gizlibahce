@@ -30,7 +30,7 @@
             <div class="flex items-center gap-4 bg-[#FAFDF6] px-4 py-2 rounded-2xl border border-[#D0DBB9] shadow-sm">
                 <div>
                     <span class="text-[10px] text-[#7A8C73] block uppercase font-semibold">BAHÇIVAN SEVİYESİ</span>
-                    <span id="userLevelBadge" class="font-serif-title font-bold text-[#3B5336] text-sm">Filiz Bahçıvan</span>
+                    <span id="userLevelBadge" class="font-serif-title font-bold text-[#3B5336] text-sm">Topraktaki Tohum</span>
                 </div>
                 <div class="h-8 w-px bg-[#D0DBB9]"></div>
                 <div>
@@ -57,7 +57,7 @@
                     <thead>
                         <tr class="border-b border-[#E2E8D7] text-[#7A8C73] text-xs uppercase tracking-wider">
                             <th class="py-3 px-4">Kitap Adı</th>
-                            <th class="py-3 px-4">Tür / Yoğunluk</th>
+                            <th class="py-3 px-4">Kalınlık Grubu</th>
                             <th class="py-3 px-4">Öz Değeri</th>
                             <th class="py-3 px-4 text-center">Durum</th>
                             <th class="py-3 px-4 text-right">İşlem</th>
@@ -104,7 +104,7 @@
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex flex-col justify-between gap-3">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Fidan Ekimi</h3>
-                        <p class="text-xs text-[#6B7C65]">+200 Öz (Raftan kitaba başla)</p>
+                        <p class="text-xs text-[#6B7C65]">Raftan aktif dikime başla</p>
                     </div>
                     <div class="flex gap-2">
                         <select id="selectBookToPlant" class="w-full bg-white border border-[#D0DBB9] rounded-lg px-3 py-1.5 text-xs text-[#2D3A3A] focus:outline-none">
@@ -116,11 +116,11 @@
                     </div>
                 </div>
 
-                <!-- Mükemmel bir çiçek! (Kitap bitti) -->
+                <!-- Kitap bitti -->
                 <div class="bg-[#F4F6F0] p-4 rounded-xl border border-[#D0DBB9] flex flex-col justify-between gap-3">
                     <div>
                         <h3 class="font-semibold text-[#2D3A3A]">Mükemmel bir çiçek! (Kitap bitti)</h3>
-                        <p class="text-xs text-[#6B7C65]">+100 Öz (Biten kitabı seç ve çiçek açtır)</p>
+                        <p class="text-xs text-[#6B7C65]">Kitabın kalınlık ve dil değerine göre Öz kazan</p>
                     </div>
                     <div class="flex gap-2">
                         <select id="finishedBookSelect" class="w-full bg-white border border-[#D0DBB9] rounded-lg px-3 py-1.5 text-xs text-[#2D3A3A] focus:outline-none">
@@ -161,38 +161,47 @@
         <section class="bg-[#FAFDF6] rounded-2xl p-6 border border-[#D0DBB9] shadow-sm">
             <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-4">🌸 Ödül Sepeti</h2>
             <div class="space-y-3">
-                <div class="p-3 rounded-xl border flex justify-between items-center bg-[#F4F6F0] border-[#D0DBB9]">
+                <div class="p-3 rounded-xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#F4F6F0] border-[#D0DBB9]">
                     <div>
-                        <span class="text-xs text-[#557A46] font-bold block">5000 Öz</span>
-                        <h4 class="font-semibold text-[#2D3A3A]">Ulu Çınar (Ormanın Koruyucusu)</h4>
-                        <p class="text-xs text-[#6B7C65]">Ödül: Kitaplığa hak edilmiş yepyeni bir çiçek gibi yeni kitap ekleme hakkı!</p>
+                        <span class="text-xs text-[#557A46] font-bold block">4000 Öz</span>
+                        <h4 class="font-semibold text-[#2D3A3A]">Ormanın Kalbi</h4>
+                        <p class="text-xs text-[#6B7C65]">Ödül: Kitaplığa yepyeni bir çiçek gibi ödül kitap ekleme hakkı!</p>
                     </div>
-                    <span id="badge-5000" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
+                    <div class="flex items-center gap-2">
+                        <span id="badge-4000" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
+                        <button id="btn-claim-4000" onclick="claimReward('Ormanın Kalbi', '🌳')" class="hidden px-3 py-1 rounded-lg text-xs font-bold bg-[#6B8E5F] text-white hover:bg-[#557A46]">Bahçeye Ekle</button>
+                    </div>
                 </div>
-                <div class="p-3 rounded-xl border flex justify-between items-center bg-[#F4F6F0] border-[#D0DBB9]">
+                <div class="p-3 rounded-xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#F4F6F0] border-[#D0DBB9]">
                     <div>
-                        <span class="text-xs text-[#557A46] font-bold block">2500 Öz</span>
+                        <span class="text-xs text-[#557A46] font-bold block">1800 Öz</span>
                         <h4 class="font-semibold text-[#2D3A3A]">Bahar Çiçeği</h4>
                         <p class="text-xs text-[#6B7C65]">Ödül: En sevdiğin bitki çayı eşliğinde film/dizi dinlenme gecesi.</p>
                     </div>
-                    <span id="badge-2500" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
-                </div>
-                <div class="p-3 rounded-xl border flex justify-between items-center bg-[#F4F6F0] border-[#D0DBB9]">
-                    <div>
-                        <span class="text-xs text-[#557A46] font-bold block">1000 Öz</span>
-                        <h4 class="font-semibold text-[#2D3A3A]">Yeşil Yaprak</h4>
-                        <p class="text-xs text-[#6B7C65]">Ödül: Favori içeceğinle büyük bir ödül molası.</p>
+                    <div class="flex items-center gap-2">
+                        <span id="badge-1800" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
+                        <button id="btn-claim-1800" onclick="claimReward('Bahar Çiçeği', '🌸')" class="hidden px-3 py-1 rounded-lg text-xs font-bold bg-[#6B8E5F] text-white hover:bg-[#557A46]">Bahçeye Ekle</button>
                     </div>
-                    <span id="badge-1000" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
+                </div>
+                <div class="p-3 rounded-xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#F4F6F0] border-[#D0DBB9]">
+                    <div>
+                        <span class="text-xs text-[#557A46] font-bold block">800 Öz</span>
+                        <h4 class="font-semibold text-[#2D3A3A]">Yeşil Yaprak</h4>
+                        <p class="text-xs text-[#6B7C65]">Ödül: Favori içeceğinle keyifli bir mola.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="badge-800" class="text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]">Kilitli</span>
+                        <button id="btn-claim-800" onclick="claimReward('Yeşil Yaprak', '🍃')" class="hidden px-3 py-1 rounded-lg text-xs font-bold bg-[#6B8E5F] text-white hover:bg-[#557A46]">Bahçeye Ekle</button>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 4. GÖRSEL ORMAN EKRANI -->
         <section class="bg-[#E2E8D7] rounded-2xl p-6 border border-[#D0DBB9] shadow-inner text-center">
-            <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-6">Canlı Orman</h2>
+            <h2 class="font-serif-title text-xl font-bold text-[#3B5336] mb-6">Canlı Orman ve Ödüller</h2>
             <div id="visualForest" class="flex flex-wrap justify-center items-end gap-6 min-h-[160px] p-6 bg-[#FAFDF6] rounded-xl border border-[#D0DBB9]">
-                <!-- Dinamik fidanlar buraya gelecek -->
+                <!-- Dinamik fidanlar ve ödüller buraya gelecek -->
             </div>
         </section>
 
@@ -205,14 +214,21 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs text-[#6B7C65] mb-1">Kitap Adı</label>
-                    <input type="text" id="inputBookName" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]" placeholder="Örn: Sefiller">
+                    <input type="text" id="inputBookName" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]" placeholder="Örn: Aşk-ı Memnu">
                 </div>
                 <div>
-                    <label class="block text-xs text-[#6B7C65] mb-1">Fidan Türü (Zorluk / Kalınlık)</label>
+                    <label class="block text-xs text-[#6B7C65] mb-1">Kalınlık / Hacim Grubu</label>
                     <select id="inputBookTier" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]">
-                        <option value="Papatya (İnce Kitap) - 100 Öz">Papatya (İnce Kitap) - 100 Öz</option>
-                        <option value="Meşe Fidanı (Normal Roman) - 200 Öz" selected>Meşe Fidanı (Normal Roman) - 200 Öz</option>
-                        <option value="Ulu Çınar (Kalın Klasik) - 500 Öz">Ulu Çınar (Kalın Klasik) - 500 Öz</option>
+                        <option value="İnce Kitap (100 Öz)">📖 İnce Kitap (100 Öz)</option>
+                        <option value="Orta Kalınlıkta (200 Öz)" selected>📘 Orta Kalınlıkta (200 Öz)</option>
+                        <option value="Kalın / Ağır Kitap (500 Öz)">📙 Kalın / Ağır Kitap (500 Öz)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-[#6B7C65] mb-1">Kitabın Dili</label>
+                    <select id="inputBookLang" class="w-full bg-[#F4F6F0] border border-[#D0DBB9] rounded-xl px-4 py-2 text-[#2D3A3A] focus:outline-none focus:border-[#6B8E5F]">
+                        <option value="Türkçe" selected>🇹🇷 Türkçe</option>
+                        <option value="İngilizce">🇬🇧 İngilizce (+50 Queen Bonus)</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
@@ -225,30 +241,59 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV7')) || {
+        let gameState = JSON.parse(localStorage.getItem('gardenReadingStateV13')) || {
             xp: 0,
+            claimedRewards: [],
             books: [
-                { id: 1, name: "Örnek: İnce Bir Hikaye", tier: "Papatya (İnce Kitap) - 100 Öz", xpValue: 100, completed: false, planted: false, totalPages: 150, readPages: 0 }
+                // İnce Kitaplar (100 Öz) + İngilizce Olanlar (+50 Bonus)
+                { id: 1, name: "Sheets", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 2, name: "Life Among the Savages", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 3, name: "Yaşlı Bebekler", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 4, name: "Kendine Ait Bir Oda", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 5, name: "Öfke Dansı", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 6, name: "Bu Benim Kanım", tier: "İnce Kitap (100 Öz)", lang: "Türkçe", xpValue: 100, baseValue: 100, isEnglish: false, completed: false, planted: false, totalPages: 150, readPages: 0 },
+                { id: 7, name: "Cancer Journals", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
+
+                // Orta Kalınlıkta Kitaplar (200 Öz) + İngilizce Olanlar (+50 Bonus)
+                { id: 8, name: "Aşk-ı Memnu", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 9, name: "Son İnsan", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 10, name: "Vahşi Evler", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 11, name: "Anna O", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 12, name: "Dümeni Yaratıcılığa Kır", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 13, name: "Lizbon'a Gece Treni", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 14, name: "Bütün Beyinli Çocuk", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 15, name: "Evet Beyinli Çocuk", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 16, name: "Dağınık Zihinler", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+                { id: 17, name: "İngiltere’nin Kısa Tarihi", tier: "Orta Kalınlıkta (200 Öz)", lang: "Türkçe", xpValue: 200, baseValue: 200, isEnglish: false, completed: false, planted: false, totalPages: 250, readPages: 0 },
+
+                // Kalın / Ağır Kitaplar (500 Öz) + İngilizce Olanlar (+50 Bonus)
+                { id: 18, name: "Ruhlar Evi", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
+                { id: 19, name: "Feminist Teori", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
+                { id: 20, name: "Feminist Düşünce", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
+                { id: 21, name: "Dünya Tarihi", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
+                { id: 22, name: "Kadınlar, Rüyalar, Ejderhalar", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 },
+                { id: 23, name: "Cadılar, Sürtükler, Feministler", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 }
             ]
         };
 
         function saveState() {
-            localStorage.setItem('gardenReadingStateV7', JSON.stringify(gameState));
+            localStorage.setItem('gardenReadingStateV13', JSON.stringify(gameState));
             render();
         }
 
         function render() {
             document.getElementById('totalXpDisplay').innerText = gameState.xp + " Öz";
             
-            let levelBadge = "Filiz Bahçıvan";
-            if (gameState.xp >= 1000) levelBadge = "Usta Bahçıvan";
-            if (gameState.xp >= 2500) levelBadge = "Orman Bekçisi";
-            if (gameState.xp >= 5000) levelBadge = "Doğa Hakimi";
+            let levelBadge = "🌱 Topraktaki Tohum";
+            if (gameState.xp >= 301) levelBadge = "🌿 Minik Filiz";
+            if (gameState.xp >= 801) levelBadge = "🌲 Genç Fidan";
+            if (gameState.xp >= 1501) levelBadge = "🌳 Ulu Ağaç";
+            if (gameState.xp >= 3001) levelBadge = "🌸🌳 Çiçek Açan Orman";
             document.getElementById('userLevelBadge').innerText = levelBadge;
 
-            updateBadgeStatus('badge-1000', gameState.xp >= 1000);
-            updateBadgeStatus('badge-2500', gameState.xp >= 2500);
-            updateBadgeStatus('badge-5000', gameState.xp >= 5000);
+            updateBadgeStatus('badge-800', 'btn-claim-800', gameState.xp >= 800, 'Yeşil Yaprak');
+            updateBadgeStatus('badge-1800', 'btn-claim-1800', gameState.xp >= 1800, 'Bahar Çiçeği');
+            updateBadgeStatus('badge-4000', 'btn-claim-4000', gameState.xp >= 4000, 'Ormanın Kalbi');
 
             renderBookTable();
             renderSelects();
@@ -279,14 +324,19 @@
                     statusClass = 'bg-[#EBEFF2] text-[#6A7B8C]';
                 }
 
+                let xpDisplayHtml = `<span class="text-[#557A46] font-semibold">+${book.xpValue} Öz</span>`;
+                if (book.isEnglish) {
+                    xpDisplayHtml += `<br><span class="text-[10px] text-[#A36C6C] font-medium">(+50 Queen Bonus)</span>`;
+                }
+
                 const tr = document.createElement('tr');
                 tr.className = book.completed ? 'opacity-50 bg-[#F4F6F0]/40' : '';
                 tr.innerHTML = `
                     <td class="py-3 px-4 font-medium ${book.completed ? 'line-through text-[#7A8C73]' : 'text-[#2D3A3A]'}">
-                        ${book.name}
+                        ${book.name} ${book.isEnglish ? '🇬🇧' : ''}
                     </td>
                     <td class="py-3 px-4 text-[#6B7C65] text-xs">${book.tier}</td>
-                    <td class="py-3 px-4 text-[#557A46] font-semibold">+${book.xpValue} Öz</td>
+                    <td class="py-3 px-4">${xpDisplayHtml}</td>
                     <td class="py-3 px-4 text-center">
                         <span class="px-2.5 py-1 rounded text-xs ${statusClass}">
                             ${statusBadge}
@@ -312,7 +362,7 @@
             finishedSelect.innerHTML = '<option value="">Bitirilen kitabı seç...</option>';
             const activeBooks = gameState.books.filter(b => b.planted && !b.completed);
             activeBooks.forEach(b => {
-                finishedSelect.innerHTML += `<option value="${b.id}">${b.name}</option>`;
+                finishedSelect.innerHTML += `<option value="${b.id}">${b.name} (+${b.xpValue} Öz)</option>`;
             });
         }
 
@@ -321,13 +371,11 @@
             container.innerHTML = '';
 
             const plantedBooks = gameState.books.filter(b => b.planted && !b.completed);
+            let hasItems = false;
 
-            if (plantedBooks.length === 0) {
-                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan yok. "Fidan Ekimi" bölümünden kitap seçerek fidan dikebilirsin!</p>`;
-                return;
-            }
-
+            // 1. Ekili fidanları ekle
             plantedBooks.forEach(book => {
+                hasItems = true;
                 let progress = book.totalPages ? (book.readPages / book.totalPages) * 100 : 10;
                 let plantEmoji = '🌱';
                 let plantStageName = 'Minik Fidan';
@@ -350,16 +398,54 @@
                 `;
                 container.appendChild(div);
             });
+
+            // 2. Kazanılıp bahçeye eklenen ödülleri ekle
+            if (gameState.claimedRewards && gameState.claimedRewards.length > 0) {
+                gameState.claimedRewards.forEach(reward => {
+                    hasItems = true;
+                    const div = document.createElement('div');
+                    div.className = "flex flex-col items-center bg-[#F4F6F0] p-4 rounded-xl border-2 border-[#6B8E5F] shadow-sm w-36";
+                    div.innerHTML = `
+                        <div class="text-4xl mb-2">${reward.icon}</div>
+                        <span class="font-bold text-xs text-[#3B5336] truncate w-full">${reward.name}</span>
+                        <span class="text-[10px] text-[#557A46] font-semibold mt-1">Ödül Simgesi ✨</span>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+
+            if (!hasItems) {
+                container.innerHTML = `<p class="text-xs text-[#7A8C73] italic">Bahçende henüz ekili aktif bir fidan veya ödül yok. Fidan dikebilir ya da açılan ödüllerini bahçene ekleyebilirsin!</p>`;
+            }
         }
 
-        function updateBadgeStatus(id, unlocked) {
-            const el = document.getElementById(id);
+        function updateBadgeStatus(badgeId, btnId, unlocked, rewardName) {
+            const badgeEl = document.getElementById(badgeId);
+            const btnEl = document.getElementById(btnId);
+            const isAlreadyClaimed = gameState.claimedRewards && gameState.claimedRewards.some(r => r.name === rewardName);
+
             if (unlocked) {
-                el.className = "text-xs px-3 py-1 rounded-full bg-[#D0DBB9] text-[#3B5336] font-bold";
-                el.innerText = "Açıldı! 🌸";
+                if (isAlreadyClaimed) {
+                    badgeEl.className = "text-xs px-3 py-1 rounded-full bg-[#6B8E5F] text-white font-bold";
+                    badgeEl.innerText = "Bahçede Eklendi 🌟";
+                    btnEl.classList.add('hidden');
+                } else {
+                    badgeEl.className = "text-xs px-3 py-1 rounded-full bg-[#D0DBB9] text-[#3B5336] font-bold";
+                    badgeEl.innerText = "Açıldı! 🌸";
+                    btnEl.classList.remove('hidden');
+                }
             } else {
-                el.className = "text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]";
-                el.innerText = "Kilitli";
+                badgeEl.className = "text-xs px-3 py-1 rounded-full bg-[#E2E8D7] text-[#6B7C65]";
+                badgeEl.innerText = "Kilitli";
+                btnEl.classList.add('hidden');
+            }
+        }
+
+        function claimReward(name, icon) {
+            if (!gameState.claimedRewards) gameState.claimedRewards = [];
+            if (!gameState.claimedRewards.some(r => r.name === name)) {
+                gameState.claimedRewards.push({ name, icon });
+                saveState();
             }
         }
 
@@ -370,9 +456,6 @@
             const book = gameState.books.find(b => b.id == bookId);
             if (book) {
                 book.planted = true;
-                book.totalPages = 200;
-                book.readPages = 0;
-                gameState.xp += 200;
                 saveState();
             }
         }
@@ -385,7 +468,7 @@
             if (book) {
                 book.completed = true;
                 book.readPages = book.totalPages;
-                gameState.xp += 100;
+                gameState.xp += book.xpValue; 
                 saveState();
             }
         }
@@ -455,20 +538,28 @@
         function addBook() {
             const name = document.getElementById('inputBookName').value.trim();
             const tier = document.getElementById('inputBookTier').value;
+            const lang = document.getElementById('inputBookLang').value;
             if (!name) return alert("Lütfen bir fidan (kitap) adı girin!");
 
-            let xpValue = 200;
-            if (tier.includes('100 Öz')) xpValue = 100;
-            if (tier.includes('500 Öz')) xpValue = 500;
+            let baseValue = 200;
+            let totalPages = 250;
+            if (tier.includes('100 Öz')) { baseValue = 100; totalPages = 150; }
+            if (tier.includes('500 Öz')) { baseValue = 500; totalPages = 450; }
+
+            let isEnglish = (lang === "İngilizce");
+            let xpValue = isEnglish ? baseValue + 50 : baseValue;
 
             const newBook = {
                 id: Date.now(),
                 name: name,
                 tier: tier,
+                lang: lang,
                 xpValue: xpValue,
+                baseValue: baseValue,
+                isEnglish: isEnglish,
                 completed: false,
                 planted: false,
-                totalPages: 200,
+                totalPages: totalPages,
                 readPages: 0
             };
 
