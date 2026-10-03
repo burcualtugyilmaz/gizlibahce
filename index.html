@@ -53,10 +53,10 @@
             </button>
         </div>
 
-        <!-- RASTGELE KİTAP SEÇME & SERBEST KRONOMETRE BÖLÜMÜ (DÜZENLENDİ) -->
+        <!-- RASTGELE KİTAP SEÇME & SERBEST KRONOMETRE BÖLÜMÜ -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <!-- Rastgele Kitap (Ortalandı) -->
+            <!-- Rastgele Kitap -->
             <div class="bg-[#FAFDF6] p-5 rounded-2xl border border-[#D0DBB9] shadow-sm flex flex-col justify-between text-center">
                 <div>
                     <h3 class="font-serif-title text-base font-bold text-[#3B5336] mb-1">Hangi kitabı okusam diye kararsız mı kaldın?</h3>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- Serbest Okuma Kronometresi (Sayaç ve Butonlar Ortalandı) -->
+            <!-- Serbest Okuma Kronometresi -->
             <div class="bg-[#FAFDF6] p-5 rounded-2xl border border-[#D0DBB9] shadow-sm flex flex-col justify-between text-center">
                 <div>
                     <h3 class="font-serif-title text-base font-bold text-[#3B5336] mb-1">📖 Serbest Okuma Kronometresi</h3>
@@ -387,9 +387,14 @@
                 }
             });
 
-            let totalMinutes = totalPages;
+            // Toplam dakika, kronometrede geçen toplam gerçek süre üzerinden hesaplanır
+            let totalMs = gameState.stopwatch.elapsedBefore || 0;
+            if (gameState.stopwatch.running && gameState.stopwatch.startTime) {
+                totalMs += (Date.now() - gameState.stopwatch.startTime);
+            }
+            let totalMinutes = Math.floor(totalMs / (60 * 1000));
 
-            document.getElementById('statTotalPages').innerText = totalPages;
+            document.getElementById('statTotalPages').innerText = Math.round(totalPages);
             document.getElementById('statTotalMinutes').innerText = totalMinutes;
             document.getElementById('statFinishedBooks').innerText = finishedCount;
             document.getElementById('statRemainingBooks').innerText = remainingCount;
@@ -412,7 +417,7 @@
                     statusBadge = 'Yeşerdi ✓';
                     statusClass = 'bg-[#D0DBB9] text-[#3B5336]';
                 } else if (book.planted) {
-                    statusBadge = `Büyüyor (${book.readPages}/${book.totalPages || 200} sf)`;
+                    statusBadge = `Büyüyor (${Math.round(book.readPages)}/${book.totalPages || 200} sf)`;
                     statusClass = 'bg-[#E2E8D7] text-[#557A46] font-semibold';
                 } else {
                     statusBadge = 'Rafta';
@@ -488,7 +493,7 @@
                     <div class="text-4xl mb-2 animate-bounce">${plantEmoji}</div>
                     <span class="font-bold text-xs text-[#3B5336] truncate w-full" title="${book.name}">${book.name}</span>
                     <span class="text-[10px] text-[#6B7C65] mt-1">${plantStageName}</span>
-                    <span class="text-[10px] text-[#557A46] font-semibold mt-0.5">${book.readPages} / ${book.totalPages || 200} Sayfa</span>
+                    <span class="text-[10px] text-[#557A46] font-semibold mt-0.5">${Math.round(book.readPages)} / ${book.totalPages || 200} Sayfa</span>
                 `;
                 container.appendChild(div);
             });
@@ -526,7 +531,7 @@
             }
         }
 
-        // --- SERBEST OKUMA KRONOMETRESİ ---
+        // --- SERBEST OKUMA KRONOMETRESİ (Okuma Hızına Göre Güncellendi) ---
         function toggleStopwatch() {
             if (!gameState.stopwatch.running) {
                 gameState.stopwatch.running = true;
@@ -547,11 +552,13 @@
                     
                     const activeBook = gameState.books.find(b => b.planted && !b.completed);
                     if (activeBook) {
-                        activeBook.readPages += newlyReadMinutes;
+                        // Yarım saatte 20 sayfa oranı (Dakika başına 20/30 = 0.6667 sayfa)
+                        const addedPages = newlyReadMinutes * (20 / 30);
+                        activeBook.readPages += addedPages;
                         if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
                     }
 
-                    alert(`Serbest okuma seansın durduruldu. Toplam ${totalMinutes} dakikalık okuman istatistiklerine ve aktif fidanına işlendi!`);
+                    alert(`Serbest okuma seansın durduruldu. Toplam ${totalMinutes} dakikalık okuman istatistiklerine ve okuma hızına göre fidanına işlendi!`);
                 }
             }
             saveState();
@@ -701,15 +708,17 @@
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
             if (activeBook) {
                 if (timerType === 'water') {
-                    activeBook.readPages += 30;
+                    // 30 dakikalık odaklanma bu hıza göre 20 sayfaya denk gelir (30 * 20/30)
+                    activeBook.readPages += 20;
                     if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
                     gameState.xp += 50;
-                    alert("Tebrikler! 30 dakikalık sulama tamamlandı, fidanın büyüdü (+30 Sayfa, +50 Öz)!");
+                    alert("Tebrikler! 30 dakikalık sulama tamamlandı, fidanın büyüdü (+20 Sayfa, +50 Öz)!");
                 } else if (timerType === 'walk') {
-                    activeBook.readPages += 60;
+                    // 60 dakikalık odaklanma bu hıza göre 40 sayfaya denk gelir (60 * 20/30)
+                    activeBook.readPages += 40;
                     if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
                     gameState.xp += 100;
-                    alert("Tebrikler! 60 dakikalık orman yürüyüşü tamamlandı, fidanın serpildi (+60 Sayfa, +100 Öz)!");
+                    alert("Tebrikler! 60 dakikalık orman yürüyüşü tamamlandı, fidanın serpildi (+40 Sayfa, +100 Öz)!");
                 }
             }
             saveState();
