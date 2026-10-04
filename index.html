@@ -336,7 +336,6 @@
         // Eski versiyonlardaki verileri otomatik taşıma kontrolü
         let savedData = localStorage.getItem(STORAGE_KEY);
         if (!savedData) {
-            // Eğer yeni anahtarda veri yoksa eski versiyonu kontrol et ve aktar
             const oldData = localStorage.getItem('gardenReadingStateV20');
             if (oldData) {
                 localStorage.setItem(STORAGE_KEY, oldData);
@@ -350,6 +349,7 @@
             witheredPlants: [],
             activeTimer: null, 
             stopwatch: { running: false, startTime: null, elapsedBefore: 0 },
+            totalTimerMinutes: 0, // Sayaçlardan gelen toplam dakikalar
             books: [
                 { id: 1, name: "Sheets", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
                 { id: 2, name: "Life Among the Savages", tier: "İnce Kitap (100 Öz)", lang: "İngilizce", xpValue: 150, baseValue: 100, isEnglish: true, completed: false, planted: false, totalPages: 150, readPages: 0 },
@@ -376,6 +376,11 @@
                 { id: 23, name: "Cadılar, Sürtükler, Feministler", tier: "Kalın / Ağır Kitap (500 Öz)", lang: "Türkçe", xpValue: 500, baseValue: 500, isEnglish: false, completed: false, planted: false, totalPages: 450, readPages: 0 }
             ]
         };
+
+        // Eksik olabilecek yeni alanlar için güvenlik kontrolü
+        if (gameState.totalTimerMinutes === undefined) {
+            gameState.totalTimerMinutes = 0;
+        }
 
         function saveState() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
@@ -419,11 +424,15 @@
                 }
             });
 
+            // Kronometre dakikaları
             let totalMs = gameState.stopwatch.elapsedBefore || 0;
             if (gameState.stopwatch.running && gameState.stopwatch.startTime) {
                 totalMs += (Date.now() - gameState.stopwatch.startTime);
             }
-            let totalMinutes = Math.floor(totalMs / (60 * 1000));
+            let stopwatchMinutes = Math.floor(totalMs / (60 * 1000));
+
+            // Kronometre dakikaları + Fidan sulama/yürüyüş sayaç dakikaları toplamı
+            let totalMinutes = stopwatchMinutes + (gameState.totalTimerMinutes || 0);
 
             document.getElementById('statTotalPages').innerText = Math.round(totalPages);
             document.getElementById('statTotalMinutes').innerText = totalMinutes;
@@ -771,19 +780,26 @@
             const timerType = gameState.activeTimer.type;
             gameState.activeTimer = null;
 
+            // Sayaç tamamlandığında kazanılan dakikaları istatistiğe ekle
+            if (!gameState.totalTimerMinutes) gameState.totalTimerMinutes = 0;
+
             const activeBook = gameState.books.find(b => b.planted && !b.completed);
-            if (activeBook) {
-                if (timerType === 'water') {
+            if (timerType === 'water') {
+                gameState.totalTimerMinutes += 30; // 30 dakika eklendi
+                if (activeBook) {
                     activeBook.readPages += 20;
                     if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
-                    gameState.xp += 50;
-                    alert("Tebrikler! 30 dakikalık sulama tamamlandı, fidanın büyüdü (+20 Sayfa, +50 Öz)!");
-                } else if (timerType === 'walk') {
+                }
+                gameState.xp += 50;
+                alert("Tebrikler! 30 dakikalık sulama tamamlandı (+30 Dakika İstatistiğe, +20 Sayfa, +50 Öz)!");
+            } else if (timerType === 'walk') {
+                gameState.totalTimerMinutes += 60; // 60 dakika eklendi
+                if (activeBook) {
                     activeBook.readPages += 40;
                     if (activeBook.readPages > activeBook.totalPages) activeBook.readPages = activeBook.totalPages;
-                    gameState.xp += 100;
-                    alert("Tebrikler! 60 dakikalık orman yürüyüşü tamamlandı, fidanın serpildi (+40 Sayfa, +100 Öz)!");
                 }
+                gameState.xp += 100;
+                alert("Tebrikler! 60 dakikalık orman yürüyüşü tamamlandı (+60 Dakika İstatistiğe, +40 Sayfa, +100 Öz)!");
             }
             saveState();
         }
